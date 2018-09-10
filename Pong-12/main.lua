@@ -11,6 +11,8 @@ VIRTUAL_HEIGHT = 243
 
 PADDLE_SPEED = 200
 
+count = 100
+
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
@@ -63,6 +65,7 @@ function love.update(dt)
     elseif gameState == 'play' then
         if ball:collides(player1) then
             ball.dx = -ball.dx * 1.03
+            count = count * 1.03
             ball.x = player1.x + 5
 
             if ball.dy < 0 then
@@ -75,6 +78,7 @@ function love.update(dt)
         end
         if ball:collides(player2) then
             ball.dx = -ball.dx * 1.03
+            count = count * 1.03
             ball.x = player2.x - 4
 
             if ball.dy < 0 then
@@ -109,6 +113,7 @@ function love.update(dt)
             else
                 gameState = 'serve'
                 ball:reset()
+                count = 100
             end
         end
 
@@ -123,6 +128,7 @@ function love.update(dt)
             else
                 gameState = 'serve'
                 ball:reset()
+                count = 100
             end
         end
     end
@@ -212,6 +218,7 @@ function love.draw()
     ball:render()
 
     displayFPS()
+    displayPCT()
 
     push:apply('end')
 end
@@ -220,6 +227,12 @@ function displayFPS()
     love.graphics.setFont(smallFont)
     love.graphics.setColor(1, 0, 0)
     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
+end
+
+function displayPCT()
+    love.graphics.setFont(smallFont)
+    love.graphics.setColor(0, 255, 0, 80)
+    love.graphics.print('PCT: ' .. tostring(math.floor(count)), 10, 30)
 end
 
 function displayScore()
